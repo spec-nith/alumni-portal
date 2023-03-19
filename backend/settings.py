@@ -125,3 +125,7 @@ if not DEBUG:
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_BROWSER_XSS_FILTER = True
     X_FRAME_OPTIONS = "DENY"
+
+EMAIL_HOST = "localhost"
+DEFAULT_FROM_EMAIL = "webmaster@localhost"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
