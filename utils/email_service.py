@@ -10,22 +10,22 @@ from django.contrib.auth.models import User
 
 @receiver(post_save, sender = Events)
 def send_event_mail(sender,instance,**kwargs):
-       recipientlist = User.objects.all()
+      recipientlist = list(User.objects.all().values_list("email", flat=True))
+      print(recipientlist)
     #serializing_result = serializers.serialize('json',instance)
     #event_serialized = serializing_result[1:-1]
-       message = "HI"#get_template("email.html").render(Context({
+      message = "HI"#get_template("email.html").render(Context({
         #'event':event_serialized
     #}))
-       for r in recipientlist:
-            mail = EmailMessage(
-              subject=instance.eventname,
-              body = message,
-              from_email=EMAIL_HOST_USER,
-              to = [r.email],
-              reply_to=[EMAIL_HOST_USER],
-            )
-            mail.content_subtype = "html"
-            mail.send()
-            print("Mail sent")
+      mail = EmailMessage(
+         subject=instance.eventname,
+         body = message,
+         from_email=EMAIL_HOST_USER,
+         bcc = recipientlist,
+         reply_to=[EMAIL_HOST_USER],
+      )
+      mail.content_subtype = "html"
+      mail.send()
+          
         
         

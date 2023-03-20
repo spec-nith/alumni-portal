@@ -48,9 +48,9 @@ class Events(models.Model):
     eventname = models.CharField(max_length=50,blank=False)
     eventimage = models.ImageField(upload_to='events',blank=True,null = True)
     date = models.DateField(blank=False)
-    text_body = models.TextField(max_length=255,blank=True,null=True)
-    location = models.TextField(max_length=100,blank=True,null=True)
-    objects = Eventsmanager
+    text_body = models.TextField(max_length=255,blank=False)
+    location = models.TextField(max_length=100,blank=False)
+    objects = Eventsmanager()
     
     def __str__(self):
         return self.eventname
