@@ -6,26 +6,26 @@ from django.template.loader import get_template
 from backend.settings import EMAIL_HOST_USER
 from api.models import Events,Alumni
 from rest_framework import serializers
+from django.contrib.auth.models import User
 
-
-@receiver(post_save,sender = Events)
-def send_event_mail(instance,**kwargs):
-    recipientlist = Alumni.objects.all()
-    event = instance
-    serializing_result = serializers.serialize('json',event)
-    event_serialized = serializing_result[1:-1]
-    message =get_template("email.html").render(Context({
-        'event':event_serialized
-    }))
-    for r in recipientlist:
-        mail = EmailMessage(
-            subject="event.eventname",
-            body = message,
-            from_email=EMAIL_HOST_USER,
-            to = [r.email],
-            reply_to=[EMAIL_HOST_USER],
-        )
-        mail.content_subtype = "html"
-        mail.send()
+@receiver(post_save, sender = Events)
+def send_event_mail(sender,instance,**kwargs):
+       recipientlist = User.objects.all()
+    #serializing_result = serializers.serialize('json',instance)
+    #event_serialized = serializing_result[1:-1]
+       message = "HI"#get_template("email.html").render(Context({
+        #'event':event_serialized
+    #}))
+       for r in recipientlist:
+            mail = EmailMessage(
+              subject=instance.eventname,
+              body = message,
+              from_email=EMAIL_HOST_USER,
+              to = [r.email],
+              reply_to=[EMAIL_HOST_USER],
+            )
+            mail.content_subtype = "html"
+            mail.send()
+            print("Mail sent")
         
         

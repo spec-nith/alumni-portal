@@ -1,19 +1,7 @@
 import uuid
 from django.db import models
-# Create your models here.
-class Eventsmanager(models.Manager):
-    def create_event(self,eventname:str,date_:str,*args) -> 'Events':
-        if not eventname:
-            raise ValueError('Event must have a name!')
-        if not date_:
-            raise ValueError('Event must have a date!')
-        
-        event = self.model(args)
-        event.eventname = eventname
-        event.date_ = date_
-        event.save()
-        return event
-        
+
+
 class Alumnimanager(models.Manager):
     def create_manager(self,name:str,email) -> 'Alumni':
         if not name:
@@ -27,8 +15,7 @@ class Alumnimanager(models.Manager):
         alumni.save()
 
         return alumni
-
-
+    
 class Alumni(models.Model):
     name = models.CharField(max_length=75,blank=False)
     email = models.EmailField(blank=False,unique=True)
@@ -36,7 +23,22 @@ class Alumni(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Eventsmanager(models.Manager):
+    def create_event(self,eventname:str,date_:str,*args) -> 'Events':
+        if not eventname:
+            raise ValueError('Event must have a name!')
+        if not date_:
+            raise ValueError('Event must have a date!')
+        
+        event = self.model(args)
+        event.eventname = eventname
+        event.date_ = date_
+        event.save()
+        return event
+        
 
+    
 class Events(models.Model):
     id = models.UUIDField(
         editable=False,
