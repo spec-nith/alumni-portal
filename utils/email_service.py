@@ -1,31 +1,32 @@
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMultiAlternatives
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.template import Context
 from django.template.loader import get_template
 from backend.settings import EMAIL_HOST_USER
 from api.models import Events,Alumni
-from rest_framework import serializers
 from django.contrib.auth.models import User
+from django.template.loader import render_to_string
 
 @receiver(post_save, sender = Events)
 def send_event_mail(sender,instance,**kwargs):
-      recipientlist = list(User.objects.all().values_list("email", flat=True))
-      print(recipientlist)
-    #serializing_result = serializers.serialize('json',instance)
-    #event_serialized = serializing_result[1:-1]
-      message = "HI"#get_template("email.html").render(Context({
-        #'event':event_serialized
-    #}))
-      mail = EmailMessage(
+    htmly = "email.html"
+    recipientlist = list(User.objects.all().values_list("email", flat=True))
+    html_content = render_to_string(htmly,{'heading':instance.eventname,
+                                           'body':instance.text_body,
+                                           'date':instance.date,
+                                           'Location':instance.location,
+                                           'image.url':instance.eventimage.url})
+    mail = EmailMultiAlternatives(
          subject=instance.eventname,
-         body = message,
+         body = html_content,
          from_email=EMAIL_HOST_USER,
          bcc = recipientlist,
          reply_to=[EMAIL_HOST_USER],
       )
-      mail.content_subtype = "html"
-      mail.send()
+
+    mail.content_subtype = "html"
+    mail.send()
           
         
         
