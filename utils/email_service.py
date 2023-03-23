@@ -16,7 +16,7 @@ def send_event_mail(sender,instance,**kwargs):
                                            'body':instance.text_body,
                                            'date':instance.date,
                                            'Location':instance.location,
-                                           'image.url':instance.eventimage.url})
+                                           })
     mail = EmailMultiAlternatives(
          subject=instance.eventname,
          body = html_content,
@@ -24,7 +24,7 @@ def send_event_mail(sender,instance,**kwargs):
          bcc = recipientlist,
          reply_to=[EMAIL_HOST_USER],
       )
-
+    mail.attach_file(instance.eventimage.path)
     mail.content_subtype = "html"
     mail.send()
           
