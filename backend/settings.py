@@ -26,6 +26,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    #3rd party apps
+    "rest_framework",
+    
+    #local apps
+    "api.apps.ApiConfig",
 ]
 
 MIDDLEWARE = [
@@ -38,12 +44,12 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "{{project_name}}.urls"
+ROOT_URLCONF = "backend.urls"
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR,'email')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -56,7 +62,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "{{project_name}}.wsgi.application"
+WSGI_APPLICATION = "backend.wsgi.application"
 
 
 DATABASES = {
@@ -99,8 +105,8 @@ STATIC_URL = "/static/"
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 # # Media Settings
-# MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-# MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
 
 # # Auth Settings
 # LOGIN_REDIRECT_URL = "/"
@@ -119,3 +125,10 @@ if not DEBUG:
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_BROWSER_XSS_FILTER = True
     X_FRAME_OPTIONS = "DENY"
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "adhishrayas@gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_HOST_PASSWORD = "xotqjofnakelzljv"
